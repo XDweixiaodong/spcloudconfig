@@ -1,29 +1,10 @@
-server:
-  port: 8081
-spring:
-  application:
-    name: app-item
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://wxd:123456@localhost:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
-  instance:
-    instance-id: ${spring.application.name}:${server.port}
-feign:
-  hystrix:
-    enabled: true
-
-jdbc:
-  driverClassName: com.mysql.jdbc.Driver
-  url: jdbc:mysql://localhost:9999/test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
-  username: root
-  password: wxd21020
-
-
-
-
-
-
+##路由规则
+zuul:
+  routes: #定义服务转发规则
+    item-service:     #item-service这个名字任意取
+      path: /item-service/** #配置请求URL的请求规则
+      url: http://localhost:8081 #真正的微服务地址，path匹配的请求都转发到这里
+#      service-id: app-item
+    order-service:
+      path: /order-service/**
+      service-id: app-order
